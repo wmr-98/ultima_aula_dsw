@@ -1,0 +1,73 @@
+<html>
+  <head>
+    <title>IFSP - Campus Pirituba</title>        
+  </head>
+  <body>
+    <section>
+      <div>
+        <h1>IFSP - Campus Pirituba</h1>        
+        <form action="/" method="POST">          
+          <div>            
+            <ul>
+              <li>
+                <label for="contato-nome">Nome</label>
+                <input type="text" name="nome" id="contato-nome" required/>
+              </li>
+              <br>              
+              <li>
+                <label for="contato-email">E-Mail</label>
+                <input type="email" name="email" id="contato-email" required/>
+              </li>
+              <li>
+                <label for="contato-telefone">Telefone</label>
+                <input type="text" name="telefone" id="contato-telefone" />
+              </li>
+              <li>
+                <label for="contato-assunto">Assunto</label>
+                <select name="assunto" id="contato-assunto">
+                  <option value="Suporte">Reclamação</option>
+                  <option value="Vendas">Sugestão</option>
+                </select>
+              </li>
+              <li>
+                <label for="contato-mensagem">Mensagem</label>
+                <textarea name="mensagem" id="contato-mensagem" rows="4" cols="50"></textarea>
+              </li>
+              <li>
+                <label for="contato-preferencia">Preferência de contato</label>
+                <input type="checkbox" name="preferencia" value="Email"> Email
+                <input type="checkbox" name="preferencia" value="Telefone"> Telefone
+              </li>
+            </ul>            
+            <input type="submit" value="Salvar" name="save" />            
+          </div>
+        </form>
+        <form action="/limparBanco" method='POST'>              
+          <input type='submit' value='Eliminar registros' name='delete' />
+        </form>          
+        <br>  
+        <table border='1'>
+          <tr>
+            <th>Nome</th><th>E-mail</th><th>Telefone</th><th>Assunto</th><th>Mensagem</th><th>Preferência</th><th>Excluir</th>
+          </tr>
+          {% for email, info in contatos.items() %}
+            <tr>
+              <td>{{ info['nome'] }}</td>
+              <td>{{ email }}</td>
+              <td>{{ info.get('telefone', '') }}</td>
+              <td>{{ info.get('assunto', '') }}</td>
+              <td>{{ info.get('mensagem', '') }}</td>
+              <td>{{ 'Email, ' if info.get('preferencia_email', False) else ''}}{{ 'Telefone' if info.get('preferencia_telefone', False) else '' }}</td>
+              <td>
+                <form action="/excluirContato" method="POST">
+                  <input type="hidden" name="email" value="{{ email }}">
+                  <input type="submit" value="Excluir" name="delete">
+                </form>
+              </td>
+            </tr>
+          {% endfor %}
+        </table>       
+      </div>
+    </section>
+  </body>
+</html>
